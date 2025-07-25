@@ -1,0 +1,95 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/theme/ModeToggle";
+import { Menu, X } from "lucide-react";
+
+function Navbar() {
+  const [mounted, setMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const navLinks = ["Home", "About", "Services", "Profile", "FAQs"];
+
+  return (
+    <header className="fixed top-0 z-50 w-full bg-transparent py-4">
+  <nav className="h-[72px] w-full flex items-center justify-center px-4">
+    <div className="w-full max-w-6xl flex items-center justify-between rounded-full border border-muted bg-background/80 text-foreground shadow-md px-6 py-3 backdrop-blur-md transition-all duration-300">
+          {/* Logo */}
+          <h1 className="text-xl font-bold tracking-tight whitespace-nowrap">
+            EyeScope AI
+          </h1>
+
+          {/* Desktop Links */}
+          <ul className="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-muted-foreground">
+            {navLinks.map((label) => (
+              <li key={label}>
+                <a
+                  href={`/${
+                    label.toLowerCase() === "home" ? "" : label.toLowerCase()
+                  }`}
+                  className="hover:text-primary transition-colors duration-200"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {/* Right Controls */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="transition-all duration-200 hover:bg-primary hover:text-white border-muted"
+            >
+              Login
+            </Button>
+            <ModeToggle />
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-muted-foreground hover:text-primary transition" />
+              ) : (
+                <Menu className="w-6 h-6 text-muted-foreground hover:text-primary transition" />
+              )}
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden mt-2 px-4 w-full flex justify-center">
+          <div className="w-full max-w-6xl rounded-xl border border-border bg-background/90 backdrop-blur-lg px-6 py-6 shadow-2xl transition-all duration-300 animate-in fade-in slide-in-from-top-5">
+            <ul className="flex flex-col items-start gap-3 text-[1rem] font-semibold text-foreground">
+              {navLinks.map((label) => (
+                <li key={label} className="w-full">
+                  <a
+                    href={`/${
+                      label.toLowerCase() === "home" ? "" : label.toLowerCase()
+                    }`}
+                    className="block w-full text-center px-4 py-2 rounded-md hover:bg-primary/90 hover:text-white transition-all duration-200"
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+export default Navbar;
