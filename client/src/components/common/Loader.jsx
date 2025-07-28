@@ -2,7 +2,7 @@ export default function Loader() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background text-primary-foreground">
       <div className="flex flex-col items-center gap-4">
-        <div className="flex text-4xl sm:text-5xl font-extrabold tracking-widest">
+        <div className="flex text-4xl sm:text-5xl font-extrabold tracking-widest text-blue-500 dark:text-neutral-200">
           {"EyeScope AI".split("").map((char, idx) => (
             <span
               key={idx}

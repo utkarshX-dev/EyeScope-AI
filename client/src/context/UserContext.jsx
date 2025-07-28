@@ -1,0 +1,18 @@
+import { useState } from "react";
+import { createContext } from "react";
+
+const userContext = createContext();
+
+export const UserProvider = ({ children }) => {
+ const [token, setToken] = useState(() => {
+  return localStorage.getItem("session_token") || null;
+});
+
+  return (
+    <userContext.Provider value={{ token, setToken }}>
+      {children}
+    </userContext.Provider>
+  );
+};
+
+export default userContext;

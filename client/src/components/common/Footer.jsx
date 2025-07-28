@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import EmailIcon from "@mui/icons-material/Email";
-
+import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer className="relative bg-background text-muted-foreground border-t border-border overflow-hidden">
@@ -17,37 +17,37 @@ export default function Footer() {
           </div>
 
           <nav className="flex gap-6 text-sm font-medium">
-            <a href="/about" className="hover:text-primary transition-colors">
+            <Link to="/about" className="hover:text-primary transition-colors">
               About
-            </a>
-            <a href="/privacy" className="hover:text-primary transition-colors">
+            </Link>
+            <Link to="/privacy" className="hover:text-primary transition-colors">
               Privacy
-            </a>
-            <a href="/terms" className="hover:text-primary transition-colors">
-              Terms
-            </a>
-            <a href="/contact" className="hover:text-primary transition-colors">
+            </Link>
+            <Link to="/terms-and-conditions" className="hover:text-primary transition-colors">
+              Terms & Conditions
+            </Link>
+            <Link to="/contact" className="hover:text-primary transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
 
           <div className="flex gap-4 items-center">
-            <a
-              href="https://github.com/your-org-or-profile"
+            <Link
+              to="https://github.com/your-org-or-profile"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
               className="hover:scale-110 transition-transform"
             >
               <GitHubIcon className="text-foreground" sx={{ fontSize: 22 }} />
-            </a>
-            <a
-              href="mailto:support@eyescope.ai"
+            </Link>
+            <Link
+              to="mailto:support@eyescope.ai"
               aria-label="Email"
               className="hover:scale-110 transition-transform"
             >
               <EmailIcon sx={{ fontSize: 22, color: "#0072c6" }} />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

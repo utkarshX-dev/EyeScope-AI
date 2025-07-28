@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import userContext from "../../context/UserContext";
 import axios from "axios";
+import { useNavigate} from "react-router-dom";
 
 export default function AuthPage() {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  const [err, setErr] = useState("");
+  const [msg, setMsg] = useState("");
+  const { setToken } = useContext(userContext);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -18,15 +24,46 @@ export default function AuthPage() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const handleAuthChange = () => {
+    setIsLogin(!isLogin);
+    setErr("");
+    setMsg("");
+    setFormData({
+      firstname: "",
+      lastname: "",
+      age: "",
+      gender: "",
+      email: "",
+      password: "",
+    });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const endpoint = isLogin ? "/api/login" : "/api/signup";
+    const endpoint = isLogin ? "/login" : "/signup";
     try {
-      const response = await axios.post(endpoint, formData);
-      alert(response.data.message);
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/users${endpoint}`,
+        formData
+      );
+      console.log(response.data);
+      setToken(response.data.token);
+      localStorage.setItem("session_token", JSON.stringify(response.data.token));
+      console.log(`token : ${response.data.token}`);
+      setMsg(response.data.message + " Redirecting to your home page...");
+      setErr("");
+      setFormData({
+        firstname: "",
+        lastname: "",
+        age: "",
+        gender: "",
+        email: "",
+        password: "",
+      });
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
-      alert(err.response?.data?.message || "Something went wrong");
+      setErr(err.response?.data?.error?.message || "Something went wrong");
     }
   };
 
@@ -36,7 +73,10 @@ export default function AuthPage() {
         <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
           {isLogin ? "Login to EyeScope AI" : "Create Your EyeScope Account"}
         </h2>
-
+        {err && <p className="text-red-500 text-sm text-center mb-4 font-bold">{err}</p>}
+        {msg && (
+          <p className="text-green-500 text-center text-sm mb-4 font-bold">{msg}</p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4 animate-fade-in">
           {!isLogin && (
             <>
@@ -132,8 +172,9 @@ export default function AuthPage() {
         <p className="text-center text-sm mt-4">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-primary font-medium hover:underline transition"
+            type="button"
+           onClick={() => handleAuthChange()}
+            className="text-blue-500 hover:font-medium hover:underline  transition duration-100"
           >
             {isLogin ? "Sign Up" : "Login"}
           </button>

@@ -1,22 +1,34 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/theme/ModeToggle";
 import { Menu, X } from "lucide-react";
+import userContext from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { token, setToken } = useContext(userContext);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
-
-  const navLinks = ["Home", "About", "Services", "Profile", "FAQs"];
-
+  const navLinks = [["Home",""], ["About", "about"], ["Get Your Report", "services"], ["Profile", "profile"], ["AI Chat Bot", "ai-chat"]];
+  const handleAuthenticate = () => {
+    if (token) {
+      logout();
+    } else {
+      navigate("/auth");
+    }
+  };
+  const logout = () => {
+    setToken(null);
+    localStorage.removeItem("session_token");
+    navigate("/");
+  }
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent py-4">
   <nav className="h-[72px] w-full flex items-center justify-center px-4">
@@ -29,14 +41,12 @@ function Navbar() {
           {/* Desktop Links */}
           <ul className="hidden md:flex items-center gap-6 text-sm sm:text-base font-medium text-muted-foreground">
             {navLinks.map((label) => (
-              <li key={label}>
+              <li key={label[1]}>
                 <a
-                  href={`/${
-                    label.toLowerCase() === "home" ? "" : label.toLowerCase()
-                  }`}
+                  href={`/${label[1]}`}
                   className="hover:text-primary transition-colors duration-200"
                 >
-                  {label}
+                  {label[0]}
                 </a>
               </li>
             ))}
@@ -48,8 +58,9 @@ function Navbar() {
               variant="outline"
               size="sm"
               className="transition-all duration-200 hover:bg-primary hover:text-white border-muted"
+              onClick={handleAuthenticate}
             >
-              Login
+              {token ? "Logout" : "Login"}
             </Button>
             <ModeToggle />
             <button

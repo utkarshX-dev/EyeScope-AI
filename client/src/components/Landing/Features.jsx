@@ -25,7 +25,7 @@ export default function FeaturesSection() {
   return (
     <>
       <h2 className="text-3xl sm:text-4xl font-bold mb-10 tracking-tight text-center">
-        Why <span className="text-primary">EyeScope AI</span> Stands Out
+        Why EyeScope AI Stands Out
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-4 sm:px-10 lg:px-24">
@@ -38,10 +38,10 @@ export default function FeaturesSection() {
             <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none" />
 
             <div className="relative z-10 text-left">
-              <h3 className="text-xl font-semibold mb-2 text-foreground group-hover:text-primary transition-colors duration-200">
+              <h3 className="text-xl font-semibold mb-2 text-foreground group-hover:transition-colors duration-200">
                 {feature.title}
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm leading-relaxed">
                 {feature.description}
               </p>
             </div>

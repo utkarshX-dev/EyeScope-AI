@@ -147,6 +147,7 @@
   --muted: #cbd5e1;
   --muted-foreground: #334155;
 }
+
 @layer utilities {
   .animate-fade-in-down {
     @apply opacity-0 translate-y-[-10px] animate-[fadeInDown_0.3s_ease-out_forwards];
