@@ -11,7 +11,7 @@ export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [err, setErr] = useState("");
   const [msg, setMsg] = useState("");
-  const { setToken } = useContext(userContext);
+  const { setToken, setUser } = useContext(userContext);
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -45,10 +45,10 @@ export default function AuthPage() {
         `${import.meta.env.VITE_SERVER_URL}/users${endpoint}`,
         formData
       );
-      console.log(response.data);
       setToken(response.data.token);
+      setUser(response.data.user);
+      localStorage.setItem("currUser", JSON.stringify(response.data.user));
       localStorage.setItem("session_token", JSON.stringify(response.data.token));
-      console.log(`token : ${response.data.token}`);
       setMsg(response.data.message + " Redirecting to your home page...");
       setErr("");
       setFormData({

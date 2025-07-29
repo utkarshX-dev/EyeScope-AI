@@ -1,35 +1,41 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
+import userContext from "../../context/UserContext";
 import axios from "axios";
 
-export default function EditProfile({ initialData = {} }) {
+export default function EditProfile() {
+  const { user, setUser } = useContext(userContext);
+  const [msg, setMsg] = useState("");
+  const [err, setErr] = useState("");
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstname: initialData.firstname || "",
-    lastname: initialData.lastname || "",
-    age: initialData.age || "",
-    gender: initialData.gender || "",
-    email: initialData.email || "",
+    firstname: user?.firstname || "",
+    lastname: user?.lastname || "",
+    age: user?.age || "",
+    gender: user?.gender || "",
+    email: user?.email || "",
   });
-  const [loading, setLoading] = useState(false);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      // Adjust endpoint as needed
       const response = await axios.put("/api/profile", formData);
-      alert(response.data.message || "Profile updated!");
+      localStorage.removeItem("currUser");
+      localStorage.setItem("currUser", JSON.stringify(response.data.user));
+      setUser(response.data.user);
+      setMsg("Profile updated successfully!");
+      setErr("");
+      navigate("/profile");
     } catch (err) {
-      alert(err.response?.data?.message || "Something went wrong");
-    } finally {
-      setLoading(false);
-    }
+      setErr(err.response?.data?.message || "An error occurred");
+      setMsg("");
+    } 
   };
 
   return (
@@ -110,9 +116,8 @@ export default function EditProfile({ initialData = {} }) {
           <Button
             type="submit"
             className="w-full text-base font-semibold"
-            disabled={loading}
           >
-            {loading ? "Saving..." : "Save Changes"}
+            Save Changes
           </Button>
         </form>
       </div>

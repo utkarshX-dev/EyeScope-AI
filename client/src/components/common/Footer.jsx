@@ -10,7 +10,6 @@ export default function Footer() {
           
           <div className="text-center md:text-left">
             <h2 className="text-lg font-bold tracking-tight text-primary">EyeScope AI</h2>
-            <p className="text-sm mt-1">Smart Retina Disease Detection for All</p>
             <p className="text-xs mt-2">
               &copy; {new Date().getFullYear()} EyeScope AI. All rights reserved.
             </p>
@@ -28,6 +27,9 @@ export default function Footer() {
             </Link>
             <Link to="/contact" className="hover:text-primary transition-colors">
               Contact
+            </Link>
+             <Link to="/faqs" className="hover:text-primary transition-colors">
+              FAQs
             </Link>
           </nav>
 

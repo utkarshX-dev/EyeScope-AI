@@ -6,13 +6,7 @@ function FaqsPage() {
     return (
         <section className="max-w-2xl mx-auto py-16 px-4">
             <h1
-                className="text-4xl sm:text-5xl font-extrabold mb-12 text-center tracking-tight"
-                style={{
-                    background: "linear-gradient(90deg, #0d6efd 0%, #228be6 60%, #66d9ff 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    color: "transparent",
-                }}
+                className="text-4xl sm:text-5xl font-extrabold mb-12 text-center tracking-tight text-blue-500"
             >
                 Frequently Asked Questions
             </h1>

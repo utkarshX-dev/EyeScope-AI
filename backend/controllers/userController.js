@@ -9,15 +9,22 @@ const signUp = wrapAsync(async (req, res, next) => {
     if (!firstname || !lastname || !age || !email || !gender || !password) {
         return next(new ExpressError('All fields are required', 400));
     }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         return next(new ExpressError('User already exists', 400));
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({ firstname, lastname, age, email, gender, password: hashedPassword });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: 7 * 24 * 60 * 60 }); // 7 days
+    user.token = token;
     await user.save();
-    res.status(201).json({ message: 'Registration Successful. You can now log in.' });
+
+    res.status(201).json({ message: 'Signup Successful', token, user: { id: user._id, email: user.email, firstname: user.firstname, lastname: user.lastname, age: user.age, gender: user.gender }});
 });
+
 const login = wrapAsync(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -34,7 +41,7 @@ const login = wrapAsync(async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: 7 * 24 * 60 * 60 }); 
     user.token = token;
     await user.save();
-    res.status(200).json({ message: 'Login Successful', token });
+    res.status(200).json({ message: 'Login Successful', token, user: { id: user._id, email: user.email, firstname: user.firstname, lastname: user.lastname, age: user.age, gender: user.gender } });
 });
 
 module.exports = { signUp, login };

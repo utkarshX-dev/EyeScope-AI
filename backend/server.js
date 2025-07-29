@@ -4,9 +4,14 @@ const userRoutes = require('./routes/userRoutes.js');
 const app = express();
 const port =  process.env.PORT || 8080;
 const mongoose = require('mongoose');
+const cors = require('cors');
 
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+}));
 app.use(express.json());
 app.use('/api/v1/users', userRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('Welcome to the Eye Care ML Project API');
@@ -25,7 +30,10 @@ app.listen(port, () => {
 app.use((err, req, res, next) => {
   const statusCode = err.status || 500;
   res.status(statusCode).json({
-    message: err.message || 'Internal Server Error'
+    error: {
+      message: err.message || 'Internal Server Error',
+      status: statusCode
+    }
   });
 });
 

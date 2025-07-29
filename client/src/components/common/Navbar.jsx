@@ -27,6 +27,7 @@ function Navbar() {
   const logout = () => {
     setToken(null);
     localStorage.removeItem("session_token");
+    localStorage.removeItem("currUser");
     navigate("/");
   }
   return (

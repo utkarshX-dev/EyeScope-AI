@@ -24,12 +24,13 @@ const userSchema = new Schema({
     },
     gender:{
         type: String,
-        enum: ['male', 'female', 'other'],
+        enum: ['Male', 'Female', 'Other'],
         required: true
     },
     token: {
         type: String,
-    }
+    },
+    
 });
 
 module.exports = userSchema;
