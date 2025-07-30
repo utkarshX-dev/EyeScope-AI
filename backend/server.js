@@ -8,6 +8,10 @@ const cors = require('cors');
 
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  exposedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json());
 app.use('/api/v1/users', userRoutes);

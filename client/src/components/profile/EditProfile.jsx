@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,35 +7,54 @@ import userContext from "../../context/UserContext";
 import axios from "axios";
 
 export default function EditProfile() {
-  const { user, setUser } = useContext(userContext);
+  const navigate = useNavigate();
+  const { user, setUser, token } = useContext(userContext);
+
+  useEffect(() => {
+    if (!token || !user) {
+      navigate("/auth");
+    }
+  }, [token, user, navigate]);
+
   const [msg, setMsg] = useState("");
   const [err, setErr] = useState("");
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstname: user?.firstname || "",
     lastname: user?.lastname || "",
     age: user?.age || "",
     gender: user?.gender || "",
-    email: user?.email || "",
   });
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMsg("");
+    setErr("");
     try {
-      const response = await axios.put("/api/profile", formData);
+      const payload = { ...formData, userId: user.id };
+      const response = await axios.put(
+        `${import.meta.env.VITE_SERVER_URL}/users/edit`,
+        payload,
+      );
+      
       localStorage.removeItem("currUser");
       localStorage.setItem("currUser", JSON.stringify(response.data.user));
       setUser(response.data.user);
-      setMsg("Profile updated successfully!");
+      setMsg("Profile updated successfully! Redirecting to your profile...");
       setErr("");
-      navigate("/profile");
+      setTimeout(() => navigate("/profile"), 1500);
     } catch (err) {
-      setErr(err.response?.data?.message || "An error occurred");
+      console.error(err);
+      setErr(
+        err.response?.data?.error?.message ||
+          err.response?.data?.message ||
+          "Internal Server Error"
+      );
       setMsg("");
-    } 
+    }
   };
 
   return (
@@ -44,6 +63,8 @@ export default function EditProfile() {
         <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
           Edit Profile
         </h2>
+        {msg && <p className="text-green-600 text-center mb-4">{msg}</p>}
+        {err && <p className="text-red-600 text-center mb-4">{err}</p>}
         <form onSubmit={handleSubmit} className="space-y-4 animate-fade-in">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -101,21 +122,9 @@ export default function EditProfile() {
               </div>
             </div>
           </div>
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              disabled
-            />
-          </div>
           <Button
             type="submit"
-            className="w-full text-base font-semibold"
+            className="w-full mt-5 text-base font-semibold"
           >
             Save Changes
           </Button>

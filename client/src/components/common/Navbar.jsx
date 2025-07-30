@@ -16,7 +16,13 @@ function Navbar() {
   }, []);
 
   if (!mounted) return null;
-  const navLinks = [["Home",""], ["About", "about"], ["Get Your Report", "services"], ["Profile", "profile"], ["AI Chat Bot", "ai-chat"]];
+  const navLinks = [
+    ["Home", ""],
+    ["About", "about"],
+    ["Get Your Report", "services"],
+    ["Profile", "profile"],
+    ["AI Chat Bot", "ai-chat"],
+  ];
   const handleAuthenticate = () => {
     if (token) {
       logout();
@@ -29,12 +35,11 @@ function Navbar() {
     localStorage.removeItem("session_token");
     localStorage.removeItem("currUser");
     navigate("/");
-  }
+  };
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent py-4">
-  <nav className="h-[72px] w-full flex items-center justify-center px-4">
-    <div className="w-full max-w-6xl flex items-center justify-between rounded-full border border-muted bg-background/80 text-foreground shadow-md px-6 py-3 backdrop-blur-md transition-all duration-300">
-          {/* Logo */}
+      <nav className="h-[72px] w-full flex items-center justify-center px-4">
+        <div className="w-full max-w-6xl flex items-center justify-between rounded-full border border-muted bg-background/80 text-foreground shadow-md px-6 py-3 backdrop-blur-md transition-all duration-300">
           <h1 className="text-xl font-bold tracking-tight whitespace-nowrap">
             EyeScope AI
           </h1>
@@ -85,14 +90,12 @@ function Navbar() {
           <div className="w-full max-w-6xl rounded-xl border border-border bg-background/90 backdrop-blur-lg px-6 py-6 shadow-2xl transition-all duration-300 animate-in fade-in slide-in-from-top-5">
             <ul className="flex flex-col items-start gap-3 text-[1rem] font-semibold text-foreground">
               {navLinks.map((label) => (
-                <li key={label} className="w-full">
+                <li key={label[1]} className="w-full">
                   <a
-                    href={`/${
-                      label.toLowerCase() === "home" ? "" : label.toLowerCase()
-                    }`}
+                    href={`/${label[1]}`}
                     className="block w-full text-center px-4 py-2 rounded-md hover:bg-primary/90 hover:text-white transition-all duration-200"
                   >
-                    {label}
+                    {label[0]}
                   </a>
                 </li>
               ))}
