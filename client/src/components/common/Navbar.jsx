@@ -20,8 +20,8 @@ function Navbar() {
     ["Home", ""],
     ["About", "about"],
     ["Get Your Report", "services"],
-    ["Profile", "profile"],
     ["AI Chat Bot", "ai-chat"],
+    ["Profile", "profile"],
   ];
   const handleAuthenticate = () => {
     if (token) {

@@ -35,7 +35,9 @@ export default function HeroSection() {
             size="lg"
             className="px-8 py-6 text-base font-semibold"
           >
+            <Link to="https://eye-disease-detector1-369.streamlit.app/">
             Get Started
+            </Link>
           </Button>
         </div>
 

@@ -18,6 +18,8 @@ const Privacy = lazy(() => import("./components/common/Privacy.jsx"));
 const AuthPage = lazy(() => import("./components/auth/AuthPage.jsx"));
 const Contact = lazy(() => import("./components/common/Contact.jsx"));
 const NotFound = lazy(() => import("./components/common/NotFound.jsx"));
+const ServicePage = lazy(() => import("./components/services/ServicePage.jsx"));
+
 
 
 function App() {
@@ -39,6 +41,7 @@ function App() {
                 <Route path="/terms-and-conditions" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/services" element={<ServicePage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
