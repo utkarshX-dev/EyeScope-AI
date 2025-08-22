@@ -8,7 +8,6 @@ const cors = require('cors');
 
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  // origin: '*', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   exposedHeaders: ["Content-Type", "Authorization"],
